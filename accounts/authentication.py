@@ -9,6 +9,7 @@ from DigitalProfile.settings.env import SECRET_KEY
 
 USER = get_user_model()
 
+
 class TokenAuthentication(BaseAuthentication):
 
     def authenticate(self, request):

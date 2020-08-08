@@ -144,9 +144,6 @@ class PasswordResetChangeView(generics.UpdateAPIView):
                 serializer.is_valid(raise_exception=True)
                 user.set_password(serializer.validated_data.get('new_password'))
                 user.save()
-                print(user.password)
-                value = user.check_password(serializer.data.get('new_password'))
-                print(value)
                 return Response({"success": "Password reset successfully"})
             else:
                 raise exceptions.AuthenticationFailed({"error": "Invalid token"}, status.HTTP_400_BAD_REQUEST)

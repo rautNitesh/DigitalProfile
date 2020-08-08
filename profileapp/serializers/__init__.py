@@ -1,1 +1,1 @@
-from .user_serializer import *
+from .citizen_serializer import *
