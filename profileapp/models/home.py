@@ -11,6 +11,9 @@ class Home(models.Model):
     senior_family_member = models.OneToOneField(
         'profileapp.Citizen', related_name="sernior_member", on_delete=models.DO_NOTHING, blank=True, null=True)
 
+    def __str__(self):
+        return f"{self.home_id} -{self.ward_no} - {self.tole} - {self.family_name}"
+
 
 class Livestock(models.Model):
     home = models.ForeignKey('profileapp.Home', on_delete=models.CASCADE)
@@ -21,8 +24,14 @@ class Livestock(models.Model):
     bird = models.CharField(
         max_length=4, validators=[int_list_validator])
 
+    def __str__(self):
+        return self.home
+
 
 class FamilyIncome(models.Model):
     home = models.ForeignKey(Home, on_delete=models.CASCADE)
     source = models.CharField(max_length=150, verbose_name="source of income")
     amount = models.IntegerField(verbose_name="yearly income")
+
+    def __str__(self):
+        return f"{self.home} - {self.amount} - {self.source}"

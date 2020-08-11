@@ -6,9 +6,9 @@ from .home import Home
 # ('database storing value', 'display value')
 
 GENDER = [
-    ('m', 'पुरुष '),
-    ('f', 'महिला'),
-    ('o', 'अन्य'),
+    ('पुरुष', 'पुरुष '),
+    ('महिला', 'महिला'),
+    ('अन्य', 'अन्य'),
 ]
 MARITAL_STATUS = [
     ('बिबाहित', 'बिबाहित'),
@@ -35,11 +35,14 @@ RELIGION = [
 ]
 
 DISABILITY = [
-    ('H', 'Hindu'),
-    ('M', "Muslim"),
-    ('C', 'Christan'),
-    ('B', 'Buddist'),
-    ('S', 'Shikh'),
+    ('Normal', 'Normal'),
+    ('Eye', "Eye"),
+    ('Hearing', 'Hearing'),
+    ('Speaking', 'Speaking'),
+    ('Manasik', 'Manasik'),
+    ('Hand', 'Hand'),
+    ('Feet', 'Feet'),
+    ('Others', 'Others')
 ]
 
 
@@ -79,3 +82,8 @@ class Citizen(models.Model):
 
     def __str__(self):
         return self.full_name
+
+
+# class Marriage(models.Model):
+#     husband = models.OneToOneField(Citizen, related_name="is_husband_of")
+#     wife = models.OneToOneField(Citizen, related_name="is_wife_of")
