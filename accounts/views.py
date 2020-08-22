@@ -25,7 +25,8 @@ class UserLoginView(APIView):
 
     def post(self, request, *args, **kwargs):
         if not request.data:
-            raise exceptions.AuthenticationFailed({"error": "Please provide login credentials"})
+            raise exceptions.AuthenticationFailed(
+                {"error": "Please provide login credentials"})
 
         username = request.data.get('username')
         password = request.data.get('password')
@@ -33,23 +34,26 @@ class UserLoginView(APIView):
         user = authenticate(username=username, password=password)
         if user:
             payload = {
+                "token": "access-token",
                 "id": user.id,
                 "email": user.email,
-                "exp": datetime.datetime.now() + datetime.timedelta(minutes=15)
+                "exp": datetime.datetime.now() + datetime.timedelta(minutes=1)
             }
-
+            # print(datetime.datetime.now() + datetime.timedelta(minutes=15))
             jwt_token = {"token": jwt.encode(payload, SECRET_KEY)}
 
             return Response(jwt_token,
                             status=status.HTTP_200_OK)
         else:
-            raise exceptions.ValidationError({"error": "Invalid login credentials, please login again"})
+            raise exceptions.ValidationError(
+                {"error": "Invalid login credentials, please login again"})
 
 
 class SignUpView(APIView):
     def post(self, request, *args, **kwargs):
         if not request.data:
-            raise exceptions.AuthenticationFailed({"error": "Please fill up signup form"})
+            raise exceptions.AuthenticationFailed(
+                {"error": "Please fill up signup form"})
 
         serializer = UserSerializer(data=request.data)
         data = {}
@@ -120,10 +124,13 @@ class PasswordChangeRequestView(generics.GenericAPIView):
         }
         token = jwt.encode(payload, SECRET_KEY)
         current_site = get_current_site(request).domain
-        relative_link = reverse('change_password_reset', kwargs={'token': token})
+        relative_link = reverse('change_password_reset',
+                                kwargs={'token': token})
         url = "http://" + current_site + relative_link
-        body = "Dear" + user.username + "please verify your identity using the link below" + url
-        send_mail(subject="verify your identity", message=body, from_email="rautesh6@gmail.com", recipient_list=[user_email], fail_silently=True)
+        body = "Dear" + user.username +\
+            "please verify your identity using the link below" + url
+        send_mail(subject="verify your identity", message=body,
+                  from_email="rautesh6@gmail.com", recipient_list=[user_email], fail_silently=True)
         print(body)
         return Response(token)
 
@@ -142,21 +149,27 @@ class PasswordResetChangeView(generics.UpdateAPIView):
                 user = USER.objects.get(email=user_email)
                 serializer = PasswordResetSerializer(data=request.data)
                 serializer.is_valid(raise_exception=True)
-                user.set_password(serializer.validated_data.get('new_password'))
+                user.set_password(
+                    serializer.validated_data.get('new_password'))
                 user.save()
                 return Response({"success": "Password reset successfully"})
             else:
-                raise exceptions.AuthenticationFailed({"error": "Invalid token"}, status.HTTP_400_BAD_REQUEST)
+                raise exceptions.AuthenticationFailed(
+                    {"error": "Invalid token"}, status.HTTP_400_BAD_REQUEST)
         except jwt.ExpiredSignature:
             raise exceptions.AuthenticationFailed({"error": "The token has expired please request a new one"},
                                                   status.HTTP_400_BAD_REQUEST)
         except IndexError:
-            raise exceptions.AuthenticationFailed({"error": "Invalid token"}, status.HTTP_400_BAD_REQUEST)
+            raise exceptions.AuthenticationFailed(
+                {"error": "Invalid token"}, status.HTTP_400_BAD_REQUEST)
 
+# view for refreshing token.
+# class RefreshTokenView(APIView):
 
+#     authentication_classes = [TokenAuthentication]
 
+#     def get_object(self, queryset=None):
+#         obj = self.request.user
+#         return obj
 
-
-
-
-
+#     def get(self, request, *args, **kwargs):

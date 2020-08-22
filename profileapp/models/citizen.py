@@ -51,9 +51,10 @@ class Citizen(models.Model):
     birth_registration_id = models.CharField(
         blank=True, max_length=150, null=True)
     full_name = models.CharField(max_length=150)
-    # ward_no = models.IntegerField(validators=[MaxLengthValidator(2)])
+    ward_no = models.CharField(max_length=2,
+                               validators=[int_list_validator])
     home = models.ForeignKey(
-        'profileapp.Home', default=5000, blank=True, on_delete=models.DO_NOTHING)
+        'profileapp.Home', related_name="house_no", default=5000, blank=True, on_delete=models.DO_NOTHING)
     gender = models.CharField(max_length=25, choices=GENDER)
     marital_status = models.CharField(
         max_length=30, choices=MARITAL_STATUS)  # marital table

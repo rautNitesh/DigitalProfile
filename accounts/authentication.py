@@ -16,14 +16,17 @@ class TokenAuthentication(BaseAuthentication):
         auth = get_authorization_header(request).split()
 
         if not auth or auth[0].lower() != b'token' or len(auth) == 0 or len(auth) > 2:
-            raise exceptions.AuthenticationFailed({"error": "Please provide valid auth header"})
+            raise exceptions.AuthenticationFailed(
+                {"error": "Please provide valid auth header"})
 
         try:
             token = auth[1]
             if token == 'null':
-               raise exceptions.AuthenticationFailed({"error": "Please provide valid token"})
+                raise exceptions.AuthenticationFailed(
+                    {"error": "Please provide valid token"})
         except UnicodeError:
-            raise exceptions.AuthenticationFailed({"error": "Invalid characters in auth header"})
+            raise exceptions.AuthenticationFailed(
+                {"error": "Invalid characters in auth header"})
 
         return self.authenticate_credentials(token)
 
@@ -41,7 +44,5 @@ class TokenAuthentication(BaseAuthentication):
             return (user, token)
 
         except jwt.ExpiredSignature:
-            raise exceptions.AuthenticationFailed({"error": "please provide valid credentials"}
-                                                  , status.HTTP_401_UNAUTHORIZED)
-
-
+            raise exceptions.AuthenticationFailed(
+                {"error": "please provide valid credentials"}, status.HTTP_401_UNAUTHORIZED)
