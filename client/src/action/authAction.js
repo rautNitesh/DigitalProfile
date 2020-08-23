@@ -12,6 +12,7 @@ export const loginUser = (userData, history) => (dispatch) => {
       localStorage.setItem("token", token);
       const decoded = jwt_decode(token, SECRET_KEY);
       dispatch(setCurrentUser(decoded));
+      history.push("dashboard");
     })
     .catch((err) =>
       dispatch({

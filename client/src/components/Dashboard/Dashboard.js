@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+
+import Chart from "../chart/Chart";
 import "./Dashboard.css";
 
 export default function Dashboard() {
@@ -24,6 +26,7 @@ export default function Dashboard() {
           </li>
         </ul>
       </aside>
+      <Chart />
     </section>
   );
 }
