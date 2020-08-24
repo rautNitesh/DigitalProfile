@@ -1,12 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
-import Chart from "../chart/Chart";
 import "./Dashboard.css";
+import Chart from "../chart";
+import Card from "../../elements/Card";
+import { Link } from "react-router-dom";
 
 export default function Dashboard() {
   return (
-    <section>
+    <section className="container">
       <aside>
         <ul>
           <li>
@@ -26,7 +27,11 @@ export default function Dashboard() {
           </li>
         </ul>
       </aside>
-      <Chart />
+      <section className="chart-container">
+        <Card>
+          <Chart />
+        </Card>
+      </section>
     </section>
   );
 }
